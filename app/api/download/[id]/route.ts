@@ -1,7 +1,14 @@
-import { createClient } from '../../../utils/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
-export const runtime = 'edge' // Use Edge runtime for better streaming performance
+// Use Node.js runtime for better compatibility with Vercel
+export const runtime = 'nodejs'
+
+// Create a simple Supabase client (no auth needed for public reads)
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function GET(
     request: NextRequest,
@@ -12,8 +19,6 @@ export async function GET(
     if (!id) {
         return NextResponse.json({ error: 'Missing app ID' }, { status: 400 })
     }
-
-    const supabase = await createClient()
 
     // Fetch the NFT/app by ID to get the actual download URL
     const { data: nft, error } = await supabase
