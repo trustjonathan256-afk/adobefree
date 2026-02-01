@@ -4,6 +4,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Share2, Heart, CloudDownload, DollarSign } from "lucide-react";
+import { toast } from "sonner";
+import { getFileSize } from "./actions";
 
 interface NFTCardProps {
     id: string;
@@ -55,10 +57,48 @@ export default function NFTCard({
         } else {
             try {
                 await navigator.clipboard.writeText(shareData.url);
-                alert("Link copied to clipboard!");
+                toast.success("Link copied to clipboard!");
             } catch (err) {
                 console.error("Error copying link:", err);
             }
+        }
+    };
+
+    const handleDownload = async () => {
+        if (!timeLeft) {
+            toast.error("Download URL not set!");
+            return;
+        }
+
+        const toastId = toast.loading("Checking file size...");
+
+        try {
+            // Use server action to get file size (avoids CORS issues)
+            const size = await getFileSize(id);
+
+            let sizeText = "";
+
+            if (size) {
+                const gigabytes = size / (1024 * 1024 * 1024);
+                if (gigabytes >= 1) {
+                    sizeText = `(${gigabytes.toFixed(2)} GB)`;
+                } else {
+                    const megabytes = size / (1024 * 1024);
+                    sizeText = `(${megabytes.toFixed(0)} MB)`;
+                }
+            }
+
+            toast.success(`Download started ${sizeText}`, { id: toastId });
+
+            // Short delay to let the toast appear before the browser handles the download
+            setTimeout(() => {
+                window.location.href = `/api/download/${id}`;
+            }, 500);
+
+        } catch (error) {
+            console.error("Size check failed", error);
+            toast.success("Download started", { id: toastId });
+            window.location.href = `/api/download/${id}`;
         }
     };
 
@@ -103,10 +143,10 @@ export default function NFTCard({
                         <h3 className="text-[1rem] sm:text-[1.15rem] font-bold tracking-tight text-white leading-snug whitespace-nowrap">
                             {title}
                         </h3>
-                        <div className="flex items-center gap-0.5 translate-y-0.5">
+                        <div className="flex items-center gap-0.5 mt-0.5">
                             {/* Dollar Icon */}
-                            <DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-price" />
-                            <span className="text-price font-bold text-base sm:text-lg leading-none">
+                            <DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-price" strokeWidth={2.5} />
+                            <span className="text-price font-bold text-base sm:text-lg">
                                 {price}
                             </span>
                         </div>
@@ -125,14 +165,7 @@ export default function NFTCard({
                         </span>
                     </button>
                     <button
-                        onClick={() => {
-                            if (!timeLeft) {
-                                alert("Download URL not set!");
-                                return;
-                            }
-                            // Use masked download URL - users won't see the actual source
-                            window.open(`/api/download/${id}`, '_blank');
-                        }}
+                        onClick={handleDownload}
                         className="flex-1 min-w-0 bg-white hover:bg-white/90 text-black font-bold py-2 sm:py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-white/20 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download"
                     >
                         <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 group-hover/download:animate-bounce" />
