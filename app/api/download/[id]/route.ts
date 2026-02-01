@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Use Node.js runtime for better compatibility with Vercel
-export const runtime = 'nodejs'
+// Use Edge runtime for better streaming performance
+export const runtime = 'edge'
 
 // Create a simple Supabase client (no auth needed for public reads)
 const supabase = createClient(
@@ -39,7 +39,7 @@ export async function GET(
         // Fetch the file from source with streaming
         const response = await fetch(nft.time_left, {
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                 'Accept': '*/*',
             },
         })
