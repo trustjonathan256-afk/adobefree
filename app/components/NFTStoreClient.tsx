@@ -98,7 +98,7 @@ function CategorySection({ category, query }: { category: Category; query: strin
                 onMouseLeave={onMouseLeave}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}
-                className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-proximity hide-scrollbar rounded-2xl sm:rounded-3xl px-4 ${isDragging ? 'snap-none' : ''}`}
+                className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-proximity hide-scrollbar rounded-2xl sm:rounded-3xl -mx-1 px-1 ${isDragging ? 'snap-none' : ''}`}
             >
                 {filteredItems.map((item) => (
                     <div
