@@ -1,22 +1,55 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import NFTCard from "./NFTCard";
 import VideoModal from "./VideoModal";
 import { useRealtimeNFTs, Category } from "../hooks/useRealtimeNFTs";
 
 // Custom hook for drag and wheel scrolling
 function useDragScroll() {
-    const ref = useRef<HTMLDivElement>(null);
+    // We use a callback ref to ensure we capture the node even if it renders late
+    const internalRef = useRef<HTMLDivElement | null>(null);
+    const [node, setNode] = useState<HTMLDivElement | null>(null);
+
+    const ref = useCallback((element: HTMLDivElement | null) => {
+        internalRef.current = element;
+        setNode(element);
+    }, []);
+
+    // Add non-passive wheel listener to map vertical scroll to horizontal
+    useEffect(() => {
+        if (!node) return;
+
+        const onWheel = (e: WheelEvent) => {
+            // Check if purely vertical scroll (most mice)
+            if (e.deltaY !== 0) {
+                // Prevent page scrolling
+                e.preventDefault();
+                // Scroll the element horizontally with smooth behavior
+                node.scrollBy({
+                    left: e.deltaY,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
+        // Passive: false is strict requirement to allow e.preventDefault()
+        node.addEventListener('wheel', onWheel, { passive: false });
+
+        return () => {
+            node.removeEventListener('wheel', onWheel);
+        };
+    }, [node]);
+
     const [isDragging, setIsDragging] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
 
     const onMouseDown = (e: React.MouseEvent) => {
-        if (!ref.current) return;
+        if (!internalRef.current) return;
         setIsDragging(true);
-        setStartX(e.pageX - ref.current.offsetLeft);
-        setScrollLeft(ref.current.scrollLeft);
+        setStartX(e.pageX - internalRef.current.offsetLeft);
+        setScrollLeft(internalRef.current.scrollLeft);
     };
 
     const onMouseLeave = () => {
@@ -28,31 +61,18 @@ function useDragScroll() {
     };
 
     const onMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging || !ref.current) return;
+        if (!isDragging || !internalRef.current) return;
         e.preventDefault();
-        const x = e.pageX - ref.current.offsetLeft;
-        // walk determines how fast it scrolls. 1 for 1:1 movement
-        const walk = (x - startX) * 1.5;
-        ref.current.scrollLeft = scrollLeft - walk;
+        const x = e.pageX - internalRef.current.offsetLeft;
+        const walk = (x - startX) * 2; // Drag multiplier
+        internalRef.current.scrollLeft = scrollLeft - walk;
     };
 
-    const onWheel = (e: React.WheelEvent) => {
-        if (ref.current) {
-            if (e.deltaY !== 0) {
-                // Using scrollBy with smooth behavior for a smoother wheel experience
-                ref.current.scrollBy({
-                    left: e.deltaY,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    };
-
-    return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, onWheel, isDragging };
+    return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging };
 }
 
 function CategorySection({ category, query }: { category: Category; query: string }) {
-    const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, onWheel, isDragging } = useDragScroll();
+    const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging } = useDragScroll();
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
     // Filter NFTs based on search query and sort by display_order
@@ -78,7 +98,6 @@ function CategorySection({ category, query }: { category: Category; query: strin
                 onMouseLeave={onMouseLeave}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}
-                onWheel={onWheel}
                 className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-proximity hide-scrollbar rounded-2xl sm:rounded-3xl -mx-1 px-1 cursor-grab ${isDragging ? 'cursor-grabbing snap-none' : ''}`}
             >
                 {filteredItems.map((item) => (
