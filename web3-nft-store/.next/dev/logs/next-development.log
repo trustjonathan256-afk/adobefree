@@ -1,0 +1,4 @@
+[00:07:20.745] Server  ERROR   ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\TRUST\Desktop\adobe download\web3-nft-store\.next\dev\server\edge\chunks\node_modules_next_dist_91a24696._.js'
+[00:07:20.915] Server  ERROR   ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\TRUST\Desktop\adobe download\web3-nft-store\.next\dev\server\edge\chunks\node_modules_next_dist_91a24696._.js'
+[00:07:22.822] Server  ERROR   ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\TRUST\Desktop\adobe download\web3-nft-store\.next\dev\server\edge\chunks\node_modules_next_dist_91a24696._.js'
+[00:07:23.753] Server  LOG     ○ Compiling /_error ...
