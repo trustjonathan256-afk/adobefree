@@ -5,7 +5,7 @@ import NFTCard from "./NFTCard";
 import VideoModal from "./VideoModal";
 import { useRealtimeNFTs, Category } from "../hooks/useRealtimeNFTs";
 
-// Custom hook for drag scrolling
+// Custom hook for drag and wheel scrolling
 function useDragScroll() {
     const ref = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -31,15 +31,28 @@ function useDragScroll() {
         if (!isDragging || !ref.current) return;
         e.preventDefault();
         const x = e.pageX - ref.current.offsetLeft;
-        const walk = (x - startX) * 2; // scroll-fast
+        // walk determines how fast it scrolls. 1 for 1:1 movement
+        const walk = (x - startX) * 1.5;
         ref.current.scrollLeft = scrollLeft - walk;
     };
 
-    return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging };
+    const onWheel = (e: React.WheelEvent) => {
+        if (ref.current) {
+            if (e.deltaY !== 0) {
+                // Using scrollBy with smooth behavior for a smoother wheel experience
+                ref.current.scrollBy({
+                    left: e.deltaY,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    };
+
+    return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, onWheel, isDragging };
 }
 
 function CategorySection({ category, query }: { category: Category; query: string }) {
-    const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging } = useDragScroll();
+    const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, onWheel, isDragging } = useDragScroll();
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
     // Filter NFTs based on search query and sort by display_order
@@ -65,7 +78,8 @@ function CategorySection({ category, query }: { category: Category; query: strin
                 onMouseLeave={onMouseLeave}
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}
-                className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-mandatory hide-scrollbar rounded-2xl sm:rounded-3xl -mx-1 px-1 cursor-grab ${isDragging ? 'cursor-grabbing snap-none' : ''}`}
+                onWheel={onWheel}
+                className={`flex gap-3 sm:gap-4 lg:gap-6 overflow-x-auto pb-4 sm:pb-6 pt-1 sm:pt-2 snap-x snap-proximity hide-scrollbar rounded-2xl sm:rounded-3xl -mx-1 px-1 cursor-grab ${isDragging ? 'cursor-grabbing snap-none' : ''}`}
             >
                 {filteredItems.map((item) => (
                     <div
