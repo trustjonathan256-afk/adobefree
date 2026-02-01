@@ -45,7 +45,7 @@ export default async function Home(props: {
           </div>
 
           {/* Support Button */}
-          <button className="flex items-center gap-2 bg-white hover:bg-white/90 border border-transparent rounded-full px-3 sm:px-5 py-2 sm:py-3 text-black font-medium transition-colors cursor-pointer flex-shrink-0 text-sm sm:text-base">
+          <button className="flex items-center gap-2 bg-white hover:bg-white/90 border border-transparent rounded-full px-3 sm:px-5 py-2 sm:py-[0.65rem] text-black font-medium transition-colors cursor-pointer flex-shrink-0 text-sm sm:text-base">
             <Headset className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="hidden sm:block">Support</span>
           </button>
