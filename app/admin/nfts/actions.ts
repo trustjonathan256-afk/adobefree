@@ -10,7 +10,12 @@ export async function deleteNFT(id: string) {
     revalidatePath('/admin')
 }
 
-export async function createNFT(formData: FormData) {
+export type ActionState = {
+    message?: string
+    error?: string
+}
+
+export async function createNFT(prevState: ActionState, formData: FormData): Promise<ActionState> {
     try {
         const supabase = await createClient()
 
@@ -30,7 +35,7 @@ export async function createNFT(formData: FormData) {
 
             if (error) {
                 console.error('Supabase Storage Upload Error:', error)
-                throw new Error(`Upload failed: ${error.message}`)
+                return { error: `Upload failed: ${error.message}` }
             }
 
             const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
@@ -38,7 +43,7 @@ export async function createNFT(formData: FormData) {
         } else {
             // Handle case where image is required
             // throwing error to be caught below
-            throw new Error("Image is required to create an App.")
+            return { error: "Image is required to create an App." }
         }
 
         // Get the max display_order to add new app at the end
@@ -50,8 +55,8 @@ export async function createNFT(formData: FormData) {
 
         if (orderError) {
             console.error('Error fetching max order:', orderError);
-            // Continue with default order if fetch fails, or throw?
-            // safe to default to 0 if table empty, but error might mean DB connection issue
+            // We proceed, as this isn't critical enough to block creation usually, 
+            // but it's good to note.
         }
 
         const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1
@@ -68,20 +73,20 @@ export async function createNFT(formData: FormData) {
 
         if (insertError) {
             console.error('Supabase DB Insert Error:', insertError)
-            throw new Error(`Database insert failed: ${insertError.message}`)
+            return { error: `Database insert failed: ${insertError.message}` }
         }
+
+        // Success message
+        return { message: 'NFT created successfully!' }
 
     } catch (e) {
         console.error('Server Action createNFT Error:', e)
-        // Re-throw so Next.js UI captures it or specific error boundary handles it
-        // Or we could return { error: ... } if we change the signature to use useActionState
-        throw e;
+        return { error: 'An unexpected error occurred. Please try again.' }
     }
 
     revalidatePath('/admin/nfts')
     revalidatePath('/admin')
     revalidatePath('/')
-    redirect('/admin/nfts')
 }
 
 export async function updateNFTOrder(

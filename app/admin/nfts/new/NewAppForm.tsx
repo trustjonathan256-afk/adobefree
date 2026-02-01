@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useActionState, useEffect } from "react";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createNFT } from "../actions";
+import { toast } from "sonner";
 
 interface Category {
   id: string;
@@ -17,6 +18,16 @@ interface NewAppFormProps {
 export default function NewAppForm({ categories }: NewAppFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Use useActionState for form handling
+  const [state, formAction, isPending] = useActionState(createNFT, { message: '', error: '' });
+
+  // Show error toast if state has error
+  useEffect(() => {
+    if (state.error) {
+      toast.error(state.error);
+    }
+  }, [state.error]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -39,7 +50,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
 
   return (
     <form
-      action={createNFT}
+      action={formAction}
       className="bg-card border border-card-border p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] space-y-4 sm:space-y-6 shadow-xl"
     >
       {/* Image Upload */}
@@ -193,8 +204,11 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
       </div>
 
       <div className="pt-4">
-        <button className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer">
-          Create App
+        <button
+          disabled={isPending}
+          className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending ? 'Creating App...' : 'Create App'}
         </button>
       </div>
     </form>
