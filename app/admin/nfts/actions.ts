@@ -11,57 +11,72 @@ export async function deleteNFT(id: string) {
 }
 
 export async function createNFT(formData: FormData) {
-    const supabase = await createClient()
+    try {
+        const supabase = await createClient()
 
-    const title = formData.get('title') as string
-    const creator = formData.get('creator') as string
-    const price = formData.get('price') as string
-    const category_id = formData.get('category_id') as string
-    const time_left = formData.get('time_left') as string
-    const imageFile = formData.get('image') as File
+        const title = formData.get('title') as string
+        const creator = formData.get('creator') as string
+        const price = formData.get('price') as string
+        const category_id = formData.get('category_id') as string
+        const time_left = formData.get('time_left') as string
+        const imageFile = formData.get('image') as File
 
-    let publicUrl = ''
+        let publicUrl = ''
 
-    if (imageFile && imageFile.size > 0) {
-        const filename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
-        const { data, error } = await supabase.storage.from('nfts').upload(filename, imageFile)
+        if (imageFile && imageFile.size > 0) {
+            const filename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+            console.log('Uploading file:', filename);
+            const { data, error } = await supabase.storage.from('nfts').upload(filename, imageFile)
 
-        if (error) {
-            console.error('Upload error:', error)
-            // Ideally return error state
-            return
+            if (error) {
+                console.error('Supabase Storage Upload Error:', error)
+                throw new Error(`Upload failed: ${error.message}`)
+            }
+
+            const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
+            publicUrl = urlData.publicUrl
+        } else {
+            // Handle case where image is required
+            // throwing error to be caught below
+            throw new Error("Image is required to create an App.")
         }
 
-        const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
-        publicUrl = urlData.publicUrl
-    } else {
-        // Handle missing image? Or allow default?
-        // For now require it or set empty string (but DB has not null)
-        // Check schema: image_url text not null
-        // So we must have an image.
-        // If fail, we crash/redirect.
-        // For simplicity:
-        return;
+        // Get the max display_order to add new app at the end
+        const { data: maxOrderData, error: orderError } = await supabase
+            .from('nfts')
+            .select('display_order')
+            .order('display_order', { ascending: false })
+            .limit(1)
+
+        if (orderError) {
+            console.error('Error fetching max order:', orderError);
+            // Continue with default order if fetch fails, or throw?
+            // safe to default to 0 if table empty, but error might mean DB connection issue
+        }
+
+        const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1
+
+        const { error: insertError } = await supabase.from('nfts').insert({
+            title,
+            creator,
+            price,
+            category_id,
+            time_left,
+            image_url: publicUrl,
+            display_order: nextOrder
+        })
+
+        if (insertError) {
+            console.error('Supabase DB Insert Error:', insertError)
+            throw new Error(`Database insert failed: ${insertError.message}`)
+        }
+
+    } catch (e) {
+        console.error('Server Action createNFT Error:', e)
+        // Re-throw so Next.js UI captures it or specific error boundary handles it
+        // Or we could return { error: ... } if we change the signature to use useActionState
+        throw e;
     }
-
-    // Get the max display_order to add new app at the end
-    const { data: maxOrderData } = await supabase
-        .from('nfts')
-        .select('display_order')
-        .order('display_order', { ascending: false })
-        .limit(1)
-
-    const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1
-
-    await supabase.from('nfts').insert({
-        title,
-        creator,
-        price,
-        category_id,
-        time_left,
-        image_url: publicUrl,
-        display_order: nextOrder
-    })
 
     revalidatePath('/admin/nfts')
     revalidatePath('/admin')
