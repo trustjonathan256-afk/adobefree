@@ -5,6 +5,7 @@ import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import { createNFT } from "../actions";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Category {
   id: string;
@@ -18,16 +19,22 @@ interface NewAppFormProps {
 export default function NewAppForm({ categories }: NewAppFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   // Use useActionState for form handling
   const [state, formAction, isPending] = useActionState(createNFT, { message: '', error: '' });
 
-  // Show error toast if state has error
+  // Handle state updates (Error or Success)
   useEffect(() => {
     if (state.error) {
       toast.error(state.error);
+    } else if (state.message) {
+      toast.success(state.message);
+      // Redirect after a short delay to allow toast to be seen
+      // or immediately. Since standard is redirect, let's do it immediately or short timeout.
+      router.push('/admin/nfts');
     }
-  }, [state.error]);
+  }, [state, router]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

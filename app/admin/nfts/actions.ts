@@ -76,6 +76,10 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             return { error: `Database insert failed: ${insertError.message}` }
         }
 
+        revalidatePath('/admin/nfts')
+        revalidatePath('/admin')
+        revalidatePath('/')
+
         // Success message
         return { message: 'NFT created successfully!' }
 
@@ -83,10 +87,6 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
         console.error('Server Action createNFT Error:', e)
         return { error: 'An unexpected error occurred. Please try again.' }
     }
-
-    revalidatePath('/admin/nfts')
-    revalidatePath('/admin')
-    revalidatePath('/')
 }
 
 export async function updateNFTOrder(
