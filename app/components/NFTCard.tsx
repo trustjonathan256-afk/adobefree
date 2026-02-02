@@ -103,7 +103,7 @@ export default function NFTCard({
     };
 
     return (
-        <div className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-300 hover:border-white/20 hover:shadow-2xl hover:shadow-accent/5">
+        <div className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:border-white/20 hover:shadow-2xl hover:shadow-accent/5">
             {/* Image Section */}
             <div className="relative p-1.5 sm:p-2 pb-0">
                 <div className="relative aspect-[5/3] rounded-t-[1.3rem] sm:rounded-t-[1.8rem] lg:rounded-t-[2.3rem] rounded-b-[1rem] sm:rounded-b-[1.25rem] lg:rounded-b-[1.5rem] overflow-hidden">
