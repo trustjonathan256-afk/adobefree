@@ -42,30 +42,47 @@ function useDragScroll() {
     }, [node]);
 
     const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
+    const [startX, setStartX] = useState(0);
+
+    // Use refs to track mouse state without triggering re-renders until threshold is met
+    const isMouseDown = useRef(false);
+    const mouseDownX = useRef(0);
 
     const onMouseDown = (e: React.MouseEvent) => {
         if (!internalRef.current) return;
-        setIsDragging(true);
+        isMouseDown.current = true;
+        mouseDownX.current = e.pageX;
         setStartX(e.pageX - internalRef.current.offsetLeft);
         setScrollLeft(internalRef.current.scrollLeft);
     };
 
     const onMouseLeave = () => {
+        isMouseDown.current = false;
         setIsDragging(false);
     };
 
     const onMouseUp = () => {
+        isMouseDown.current = false;
         setIsDragging(false);
     };
 
     const onMouseMove = (e: React.MouseEvent) => {
-        if (!isDragging || !internalRef.current) return;
-        e.preventDefault();
-        const x = e.pageX - internalRef.current.offsetLeft;
-        const walk = (x - startX) * 2; // Drag multiplier
-        internalRef.current.scrollLeft = scrollLeft - walk;
+        if (!isMouseDown.current || !internalRef.current) return;
+
+        // Only start dragging if moves more than 5 pixels
+        const x = e.pageX;
+        const distance = Math.abs(x - mouseDownX.current);
+
+        if (!isDragging && distance > 5) {
+            setIsDragging(true);
+        }
+
+        if (isDragging) {
+            e.preventDefault();
+            const walkX = (x - (startX + internalRef.current.offsetLeft)) * 2; // Drag multiplier
+            internalRef.current.scrollLeft = scrollLeft - walkX;
+        }
     };
 
     return { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging };
