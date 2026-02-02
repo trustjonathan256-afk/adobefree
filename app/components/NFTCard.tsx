@@ -103,7 +103,7 @@ export default function NFTCard({
     };
 
     return (
-        <div className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:border-white/20 hover:shadow-2xl hover:shadow-accent/5">
+        <div className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5">
             {/* Image Section */}
             <div className="relative p-1.5 sm:p-2 pb-0">
                 <div className="relative aspect-[5/3] rounded-t-[1.3rem] sm:rounded-t-[1.8rem] lg:rounded-t-[2.3rem] rounded-b-[1rem] sm:rounded-b-[1.25rem] lg:rounded-b-[1.5rem] overflow-hidden">
@@ -158,7 +158,7 @@ export default function NFTCard({
                 <div className="flex items-center justify-between gap-2 sm:gap-4 pt-1 sm:pt-2">
                     <button
                         onClick={() => onInstallationClick("/installation-video/MONTAGEM BOLADA (Ultra Slowed).mp4")}
-                        className="pill-container rounded-full px-2 py-2 sm:py-2.5 flex items-center justify-center flex-1 min-w-0 cursor-pointer border-[0.5px] border-white/5 hover:!border-white transition-all duration-300 group/inst"
+                        className="pill-container rounded-full px-2 py-2 sm:py-2.5 flex items-center justify-center flex-1 min-w-0 cursor-pointer border border-card-border hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 ease-out active:scale-95 group/inst"
                     >
                         <span className="text-muted/80 font-semibold text-[0.7rem] sm:text-[0.8rem] whitespace-nowrap truncate transition-colors">
                             Installation
