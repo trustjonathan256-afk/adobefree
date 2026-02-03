@@ -15,6 +15,7 @@ interface NFTCardProps {
     price: string;
     timeLeft: string;
     description?: string;
+    badgeText?: string;
     onInstallationClick: (url: string) => void;
     onDetailsClick: () => void;
 }
@@ -26,6 +27,7 @@ export default function NFTCard({
     title,
     price,
     timeLeft,
+    badgeText,
     onInstallationClick,
     onDetailsClick,
 }: NFTCardProps) {
@@ -85,6 +87,12 @@ export default function NFTCard({
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         priority
                     />
+                    {/* Version Badge */}
+                    {badgeText && (
+                        <div className="absolute top-3 left-3 bg-accent text-white text-[0.65rem] sm:text-xs font-bold px-2.5 py-1 rounded-full shadow-lg border border-white/10 backdrop-blur-md">
+                            {badgeText}
+                        </div>
+                    )}
                 </div>
 
                 {/* Action Buttons (Overlapping Image) */}

@@ -84,7 +84,7 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             display_order: nextOrder,
             description,
             badge_text: badge_text || null,
-            downloads: 0 // Initialize downloads to 0
+            downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0
         })
 
         if (insertError) {
@@ -170,6 +170,7 @@ export async function updateNFT(formData: FormData) {
         time_left,
         description,
         badge_text: badge_text || null,
+        downloads: formData.get('downloads') ? parseInt(formData.get('downloads') as string) : 0,
         image_url: publicUrl,
         product_image_url: productImageUrl || null
     }).eq('id', id)

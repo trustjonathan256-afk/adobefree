@@ -184,17 +184,31 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                 </div>
             </div>
 
-            <div className="space-y-3">
-                <label className="text-sm font-medium text-muted ml-2 block">
-                    Description
-                </label>
-                <textarea
-                    name="description"
-                    rows={4}
-                    defaultValue={nft.description || ''}
-                    placeholder="Enter app description..."
-                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted ml-2 block">
+                        Description
+                    </label>
+                    <textarea
+                        name="description"
+                        rows={4}
+                        defaultValue={nft.description || ''}
+                        placeholder="Enter app description..."
+                        className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
+                    />
+                </div>
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted ml-2 block">
+                        Downloads Count
+                    </label>
+                    <input
+                        name="downloads"
+                        type="number"
+                        defaultValue={nft.downloads}
+                        className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+                    />
+                    <p className="text-muted text-xs ml-4">Set manual count</p>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
@@ -219,18 +233,24 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                 </div>
             </div>
 
-            <div className="space-y-3">
-                <label className="text-sm font-medium text-muted ml-2 block">Category</label>
-                <div className="relative">
-                    <select name="category_id" defaultValue={nft.category_id || ''} required className="w-full bg-[#1c1e26] border border-white/10 rounded-full py-4 px-8 text-white focus:outline-none focus:border-accent/50 transition-all appearance-none cursor-pointer text-lg">
-                        <option value="" disabled>Select a category</option>
-                        {categories?.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.name}</option>
-                        ))}
-                    </select>
-                    <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-muted">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted ml-2 block">Category</label>
+                    <div className="relative">
+                        <select name="category_id" defaultValue={nft.category_id || ''} required className="w-full bg-[#1c1e26] border border-white/10 rounded-full py-4 px-8 text-white focus:outline-none focus:border-accent/50 transition-all appearance-none cursor-pointer text-lg">
+                            <option value="" disabled>Select a category</option>
+                            {categories?.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                            ))}
+                        </select>
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-muted">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                     </div>
+                </div>
+                <div className="space-y-3">
+                    <label className="text-sm font-medium text-muted ml-2 block">Version Badge (Optional)</label>
+                    <input name="badge_text" defaultValue={nft.badge_text || ''} placeholder="e.g. v2026, New, Beta" className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg" />
                 </div>
             </div>
 

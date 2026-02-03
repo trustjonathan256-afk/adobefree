@@ -16,6 +16,8 @@ interface ProductModalProps {
         creator: string;
         price: string;
         timeLeft: string;
+        downloads: number;
+        badge_text?: string;
     } | null;
     onClose: () => void;
 }
@@ -172,6 +174,13 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                                 <DollarSign className="w-4 h-4 text-price" strokeWidth={2.5} />
                                 <span className="text-price font-bold text-lg">
                                     {product.price}
+                                </span>
+                            </div>
+                            {/* Download Count */}
+                            <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5">
+                                <CloudDownload className="w-4 h-4 text-muted" strokeWidth={2.5} />
+                                <span className="text-muted font-bold text-sm">
+                                    {product.downloads > 0 ? `${product.downloads} Downloads` : 'New'}
                                 </span>
                             </div>
                         </div>

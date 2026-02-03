@@ -134,6 +134,7 @@ function CategorySection({ category, query }: { category: Category; query: strin
                                 price={item.price}
                                 timeLeft={item.time_left}
                                 description={item.description}
+                                badgeText={item.badge_text}
                                 onInstallationClick={(url) => setActiveVideo(url)}
                                 onDetailsClick={() => setActiveProduct(item)}
                             />
@@ -156,7 +157,9 @@ function CategorySection({ category, query }: { category: Category; query: strin
                     product_image_url: activeProduct.product_image_url,
                     creator: activeProduct.creator,
                     price: activeProduct.price,
-                    timeLeft: activeProduct.time_left
+                    timeLeft: activeProduct.time_left,
+                    downloads: activeProduct.downloads,
+                    badge_text: activeProduct.badge_text
                 }}
                 onClose={() => setActiveProduct(null)}
             />
