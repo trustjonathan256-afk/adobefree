@@ -3,7 +3,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import NFTCard from "./NFTCard";
 import VideoModal from "./VideoModal";
-import { useRealtimeNFTs, Category } from "../hooks/useRealtimeNFTs";
+import ProductModal from "./ProductModal";
+import { useRealtimeNFTs, Category, NFT } from "../hooks/useRealtimeNFTs";
 
 // Custom hook for drag and wheel scrolling
 function useDragScroll() {
@@ -91,6 +92,7 @@ function useDragScroll() {
 function CategorySection({ category, query }: { category: Category; query: string }) {
     const { ref, onMouseDown, onMouseLeave, onMouseUp, onMouseMove, isDragging } = useDragScroll();
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
+    const [activeProduct, setActiveProduct] = useState<NFT | null>(null);
 
     // Filter NFTs based on search query and sort by display_order
     const filteredItems = category.nfts
@@ -131,7 +133,9 @@ function CategorySection({ category, query }: { category: Category; query: strin
                                 title={item.title}
                                 price={item.price}
                                 timeLeft={item.time_left}
+                                description={item.description}
                                 onInstallationClick={(url) => setActiveVideo(url)}
+                                onDetailsClick={() => setActiveProduct(item)}
                             />
                         </div>
                     </div>
@@ -141,6 +145,20 @@ function CategorySection({ category, query }: { category: Category; query: strin
             <VideoModal
                 videoUrl={activeVideo}
                 onClose={() => setActiveVideo(null)}
+            />
+
+            <ProductModal
+                product={activeProduct && {
+                    id: activeProduct.id,
+                    image: activeProduct.image_url,
+                    title: activeProduct.title,
+                    description: activeProduct.description,
+                    product_image_url: activeProduct.product_image_url,
+                    creator: activeProduct.creator,
+                    price: activeProduct.price,
+                    timeLeft: activeProduct.time_left
+                }}
+                onClose={() => setActiveProduct(null)}
             />
         </section>
     );

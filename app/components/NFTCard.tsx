@@ -14,7 +14,9 @@ interface NFTCardProps {
     title: string;
     price: string;
     timeLeft: string;
+    description?: string;
     onInstallationClick: (url: string) => void;
+    onDetailsClick: () => void;
 }
 
 export default function NFTCard({
@@ -25,6 +27,7 @@ export default function NFTCard({
     price,
     timeLeft,
     onInstallationClick,
+    onDetailsClick,
 }: NFTCardProps) {
     const [isLiked, setIsLiked] = useState(false);
 
@@ -35,17 +38,19 @@ export default function NFTCard({
         }
     }, [id]);
 
-    const handleLike = () => {
+    const handleLike = (e: React.MouseEvent) => {
+        e.stopPropagation();
         const newState = !isLiked;
         setIsLiked(newState);
         localStorage.setItem(`liked-${id}`, JSON.stringify(newState));
     };
 
-    const handleShare = async () => {
+    const handleShare = async (e: React.MouseEvent) => {
+        e.stopPropagation();
         const shareData = {
             title: 'Adobe Free',
             text: 'Check out Adobe Free App Store',
-            url: 'https://adobefree.com',
+            url: window.location.href, // This could be better if we had specific product pages
         };
 
         if (navigator.share) {
@@ -64,46 +69,11 @@ export default function NFTCard({
         }
     };
 
-    const handleDownload = async () => {
-        if (!timeLeft) {
-            toast.error("Download URL not set!");
-            return;
-        }
-
-        const toastId = toast.loading("Checking file size...");
-
-        try {
-            // Use server action to get file size (avoids CORS issues)
-            const size = await getFileSize(id);
-
-            let sizeText = "";
-
-            if (size) {
-                const gigabytes = size / (1024 * 1024 * 1024);
-                if (gigabytes >= 1) {
-                    sizeText = `(${gigabytes.toFixed(2)} GB)`;
-                } else {
-                    const megabytes = size / (1024 * 1024);
-                    sizeText = `(${megabytes.toFixed(0)} MB)`;
-                }
-            }
-
-            toast.success(`Download started ${sizeText}`, { id: toastId });
-
-            // Short delay to let the toast appear before the browser handles the download
-            setTimeout(() => {
-                window.location.href = `/api/download/${id}`;
-            }, 500);
-
-        } catch (error) {
-            console.error("Size check failed", error);
-            toast.success("Download started", { id: toastId });
-            window.location.href = `/api/download/${id}`;
-        }
-    };
-
     return (
-        <div className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5">
+        <div
+            onClick={onDetailsClick}
+            className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5"
+        >
             {/* Image Section */}
             <div className="relative p-1.5 sm:p-2 pb-0">
                 <div className="relative aspect-[5/3] rounded-t-[1.3rem] sm:rounded-t-[1.8rem] lg:rounded-t-[2.3rem] rounded-b-[1rem] sm:rounded-b-[1.25rem] lg:rounded-b-[1.5rem] overflow-hidden">
@@ -154,10 +124,12 @@ export default function NFTCard({
                 </div>
 
                 {/* Bottom Actions */}
-                {/* Bottom Actions */}
                 <div className="flex items-center justify-between gap-2 sm:gap-4 pt-1 sm:pt-2">
                     <button
-                        onClick={() => onInstallationClick("/installation-video/MONTAGEM BOLADA (Ultra Slowed).mp4")}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onInstallationClick("/installation-video/MONTAGEM BOLADA (Ultra Slowed).mp4");
+                        }}
                         className="pill-container rounded-full px-2 py-2 sm:py-2.5 flex items-center justify-center flex-1 min-w-0 cursor-pointer border border-card-border hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 ease-out active:scale-95 group/inst"
                     >
                         <span className="text-muted/80 font-semibold text-[0.7rem] sm:text-[0.8rem] whitespace-nowrap truncate transition-colors">
@@ -165,7 +137,10 @@ export default function NFTCard({
                         </span>
                     </button>
                     <button
-                        onClick={handleDownload}
+                        onClick={(e) => {
+                            e.stopPropagation(); // Prevent card click
+                            onDetailsClick();    // Open details modal
+                        }}
                         className="flex-1 min-w-0 bg-white hover:bg-white/90 text-black font-bold py-2 sm:py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-white/20 text-[0.8rem] sm:text-[0.9rem] cursor-pointer flex items-center justify-center px-2 hover:scale-[1.02] active:scale-95 group/download"
                     >
                         <CloudDownload className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1 sm:mr-1.5 flex-shrink-0 group-hover/download:animate-bounce" />

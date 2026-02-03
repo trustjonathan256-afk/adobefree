@@ -18,7 +18,9 @@ interface NewAppFormProps {
 
 export default function NewAppForm({ categories }: NewAppFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [productPreviewUrl, setProductPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const productFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   // Use useActionState for form handling
@@ -31,7 +33,6 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     } else if (state.message) {
       toast.success(state.message);
       // Redirect after a short delay to allow toast to be seen
-      // or immediately. Since standard is redirect, let's do it immediately or short timeout.
       router.push('/admin/nfts');
     }
   }, [state, router]);
@@ -44,6 +45,14 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     }
   };
 
+  const handleProductImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setProductPreviewUrl(url);
+    }
+  };
+
   const clearPreview = () => {
     setPreviewUrl(null);
     if (fileInputRef.current) {
@@ -51,8 +60,19 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     }
   };
 
+  const clearProductPreview = () => {
+    setProductPreviewUrl(null);
+    if (productFileInputRef.current) {
+      productFileInputRef.current.value = "";
+    }
+  };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
+  };
+
+  const triggerProductFileInput = () => {
+    productFileInputRef.current?.click();
   };
 
   return (
@@ -60,67 +80,128 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
       action={formAction}
       className="bg-card border border-card-border p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] space-y-4 sm:space-y-6 shadow-xl"
     >
-      {/* Image Upload */}
-      <div className="space-y-4">
-        <label className="text-sm font-medium text-muted ml-2 block">
-          App Icon / Image
-        </label>
+      {/* Dual Image Upload Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Card/Thumbnail Image */}
+        <div className="space-y-4">
+          <label className="text-sm font-medium text-muted ml-2 block">
+            Card Image (Thumbnail)
+          </label>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          name="image"
-          required
-          className="hidden"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
+          <input
+            ref={fileInputRef}
+            type="file"
+            name="image"
+            required
+            className="hidden"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
 
-        {previewUrl ? (
-          <div className="relative w-full h-64 rounded-[2rem] overflow-hidden group border-2 border-dashed border-white/10 bg-white/5">
-            <Image
-              src={previewUrl}
-              alt="Preview"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-              <button
-                type="button"
-                onClick={clearPreview}
-                className="p-3 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors backdrop-blur-md"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <button
-                type="button"
-                onClick={triggerFileInput}
-                className="p-3 bg-white/10 text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer backdrop-blur-md"
-              >
-                <Upload className="w-6 h-6" />
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div
-            onClick={triggerFileInput}
-            className="relative border-2 border-dashed border-white/10 rounded-[2rem] p-12 text-center hover:border-accent/50 transition-colors group cursor-pointer bg-white/5 select-none"
-          >
-            <div className="flex flex-col items-center gap-4 pointer-events-none">
-              <div className="p-4 bg-white/10 rounded-full group-hover:bg-accent/20 transition-colors">
-                <Upload className="w-8 h-8 text-muted group-hover:text-accent" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-white font-medium">
-                  Click to upload App Icon
-                </p>
-                <p className="text-muted text-sm">
-                  SVG, PNG, JPG or GIF (max. 10MB)
-                </p>
+          {previewUrl ? (
+            <div className="relative w-full aspect-[5/3] rounded-[2rem] overflow-hidden group border-2 border-dashed border-white/10 bg-white/5">
+              <Image
+                src={previewUrl}
+                alt="Preview"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                <button
+                  type="button"
+                  onClick={clearPreview}
+                  className="p-3 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors backdrop-blur-md"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={triggerFileInput}
+                  className="p-3 bg-white/10 text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer backdrop-blur-md"
+                >
+                  <Upload className="w-6 h-6" />
+                </button>
               </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div
+              onClick={triggerFileInput}
+              className="relative w-full aspect-[5/3] border-2 border-dashed border-white/10 rounded-[2rem] flex items-center justify-center text-center hover:border-accent/50 transition-colors group cursor-pointer bg-white/5 select-none"
+            >
+              <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
+                <div className="p-3 bg-white/10 rounded-full group-hover:bg-accent/20 transition-colors">
+                  <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-white font-medium text-sm">Upload Thumbnail</p>
+                  <p className="text-muted text-xs">
+                    (5:3 Aspect Ratio)
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Product/Details Image */}
+        <div className="space-y-4">
+          <label className="text-sm font-medium text-muted ml-2 block">
+            Product Image (Modal)
+          </label>
+
+          <input
+            ref={productFileInputRef}
+            type="file"
+            name="product_image"
+            className="hidden"
+            accept="image/*"
+            onChange={handleProductImageChange}
+          />
+
+          {productPreviewUrl ? (
+            <div className="relative w-full aspect-[5/3] rounded-[2rem] overflow-hidden group border-2 border-dashed border-white/10 bg-white/5">
+              <Image
+                src={productPreviewUrl}
+                alt="Product Preview"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                <button
+                  type="button"
+                  onClick={clearProductPreview}
+                  className="p-3 bg-red-500/20 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors backdrop-blur-md"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={triggerProductFileInput}
+                  className="p-3 bg-white/10 text-white rounded-full hover:bg-white hover:text-black transition-colors cursor-pointer backdrop-blur-md"
+                >
+                  <Upload className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div
+              onClick={triggerProductFileInput}
+              className="relative w-full aspect-[5/3] border-2 border-dashed border-white/10 rounded-[2rem] flex items-center justify-center text-center hover:border-accent/50 transition-colors group cursor-pointer bg-white/5 select-none"
+            >
+              <div className="flex flex-col items-center gap-2 pointer-events-none p-4">
+                <div className="p-3 bg-white/10 rounded-full group-hover:bg-accent/20 transition-colors">
+                  <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-white font-medium text-sm">Upload Product Cover</p>
+                  <p className="text-muted text-xs">
+                    (High Quality Recommended)
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
@@ -146,6 +227,18 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />
         </div>
+      </div>
+
+      <div className="space-y-3">
+        <label className="text-sm font-medium text-muted ml-2 block">
+          Description
+        </label>
+        <textarea
+          name="description"
+          rows={4}
+          placeholder="Enter app description..."
+          className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
+        />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">

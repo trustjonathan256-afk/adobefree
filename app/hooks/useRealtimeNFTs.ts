@@ -15,6 +15,8 @@ export interface NFT {
     category_id: string;
     created_at: string;
     display_order: number;
+    description?: string;
+    product_image_url?: string;
 }
 
 export interface Category {

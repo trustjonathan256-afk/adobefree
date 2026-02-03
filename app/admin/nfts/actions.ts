@@ -24,40 +24,50 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
         const price = formData.get('price') as string
         const category_id = formData.get('category_id') as string
         const time_left = formData.get('time_left') as string
+        const description = formData.get('description') as string
         const imageFile = formData.get('image') as File
+        const productImageFile = formData.get('product_image') as File
 
         let publicUrl = ''
+        let productImageUrl = ''
 
+        // Upload Card Image
         if (imageFile && imageFile.size > 0) {
-            const filename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
-            console.log('Uploading file:', filename);
-            const { data, error } = await supabase.storage.from('nfts').upload(filename, imageFile)
+            const filename = `card-${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+            const { error } = await supabase.storage.from('nfts').upload(filename, imageFile)
 
             if (error) {
-                console.error('Supabase Storage Upload Error:', error)
-                return { error: `Upload failed: ${error.message}` }
+                console.error('Supabase Storage Upload Error (Card):', error)
+                return { error: `Card Image Upload failed: ${error.message}` }
             }
 
             const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
             publicUrl = urlData.publicUrl
         } else {
-            // Handle case where image is required
-            // throwing error to be caught below
-            return { error: "Image is required to create an App." }
+            return { error: "Card Image is required." }
         }
 
-        // Get the max display_order to add new app at the end
+        // Upload Product Image (Optional, or fallback to Card Image?)
+        // Let's make it optional - if not provided, just leave null or use logic elsewhere
+        if (productImageFile && productImageFile.size > 0) {
+            const filename = `product-${Date.now()}-${productImageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+            const { error } = await supabase.storage.from('nfts').upload(filename, productImageFile)
+
+            if (error) {
+                console.error('Supabase Storage Upload Error (Product):', error)
+                // Don't fail entire creation for this? Or strictly fail? Let's fail to be safe.
+                return { error: `Product Image Upload failed: ${error.message}` }
+            }
+
+            const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
+            productImageUrl = urlData.publicUrl
+        }
+
         const { data: maxOrderData, error: orderError } = await supabase
             .from('nfts')
             .select('display_order')
             .order('display_order', { ascending: false })
             .limit(1)
-
-        if (orderError) {
-            console.error('Error fetching max order:', orderError);
-            // We proceed, as this isn't critical enough to block creation usually, 
-            // but it's good to note.
-        }
 
         const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1
 
@@ -68,7 +78,9 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
             category_id,
             time_left,
             image_url: publicUrl,
-            display_order: nextOrder
+            product_image_url: productImageUrl || null, // Allow null if not uploaded
+            display_order: nextOrder,
+            description
         })
 
         if (insertError) {
@@ -80,7 +92,6 @@ export async function createNFT(prevState: ActionState, formData: FormData): Pro
         revalidatePath('/admin')
         revalidatePath('/')
 
-        // Success message
         return { message: 'NFT created successfully!' }
 
     } catch (e) {
@@ -94,7 +105,6 @@ export async function updateNFTOrder(
 ) {
     const supabase = await createClient()
 
-    // Update each NFT's display_order
     for (const nft of nfts) {
         await supabase
             .from('nfts')
@@ -103,7 +113,7 @@ export async function updateNFTOrder(
     }
 
     revalidatePath('/admin/nfts')
-    revalidatePath('/') // Revalidate homepage too
+    revalidatePath('/')
 }
 
 export async function updateNFT(formData: FormData) {
@@ -115,19 +125,35 @@ export async function updateNFT(formData: FormData) {
     const price = formData.get('price') as string
     const category_id = formData.get('category_id') as string
     const time_left = formData.get('time_left') as string
+    const description = formData.get('description') as string
+
+    // Card Image
     const imageFile = formData.get('image') as File
     let publicUrl = formData.get('current_image_url') as string
 
-    if (imageFile && imageFile.size > 0) {
-        const filename = `${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
-        const { data, error } = await supabase.storage.from('nfts').upload(filename, imageFile)
+    // Product Image
+    const productImageFile = formData.get('product_image') as File
+    let productImageUrl = formData.get('current_product_image_url') as string
 
-        if (error) {
-            console.error('Upload error:', error)
-            // Proceed with old image?
-        } else {
+    // Handle Card Image Upload
+    if (imageFile && imageFile.size > 0) {
+        const filename = `card-${Date.now()}-${imageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+        const { error } = await supabase.storage.from('nfts').upload(filename, imageFile)
+
+        if (!error) {
             const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
             publicUrl = urlData.publicUrl
+        }
+    }
+
+    // Handle Product Image Upload
+    if (productImageFile && productImageFile.size > 0) {
+        const filename = `product-${Date.now()}-${productImageFile.name.replace(/[^a-zA-Z0-9.-]/g, '')}`
+        const { error } = await supabase.storage.from('nfts').upload(filename, productImageFile)
+
+        if (!error) {
+            const { data: urlData } = supabase.storage.from('nfts').getPublicUrl(filename)
+            productImageUrl = urlData.publicUrl
         }
     }
 
@@ -137,7 +163,9 @@ export async function updateNFT(formData: FormData) {
         price,
         category_id,
         time_left,
-        image_url: publicUrl
+        description,
+        image_url: publicUrl,
+        product_image_url: productImageUrl || null
     }).eq('id', id)
 
     revalidatePath('/admin/nfts')
