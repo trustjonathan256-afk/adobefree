@@ -18,7 +18,9 @@ export async function addCategory(formData: FormData) {
 
   const nextOrder = (maxOrderData?.[0]?.display_order ?? -1) + 1;
 
-  await supabase.from("categories").insert({ name, slug, display_order: nextOrder });
+  await supabase
+    .from("categories")
+    .insert({ name, slug, display_order: nextOrder });
   revalidatePath("/admin/categories");
   revalidatePath("/admin");
 }
@@ -31,7 +33,7 @@ export async function deleteCategory(id: string) {
 }
 
 export async function updateCategoryOrder(
-  categories: { id: string; display_order: number }[]
+  categories: { id: string; display_order: number }[],
 ) {
   const supabase = await createClient();
 

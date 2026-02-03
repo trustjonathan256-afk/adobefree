@@ -38,8 +38,8 @@ export default function RootLayout({
               borderRadius: "9999px",
               background: "var(--card-bg)",
               border: "1px solid var(--card-border)",
-              color: "var(--foreground)"
-            }
+              color: "var(--foreground)",
+            },
           }}
         />
         {children}

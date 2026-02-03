@@ -13,7 +13,9 @@ export default async function CategoriesPage() {
   return (
     <div className="space-y-4 sm:space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl sm:text-3xl font-bold text-white">Categories</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-white">
+          Categories
+        </h2>
       </div>
 
       {/* Add Form */}

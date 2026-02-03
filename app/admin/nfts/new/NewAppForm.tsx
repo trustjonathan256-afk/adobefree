@@ -18,13 +18,18 @@ interface NewAppFormProps {
 
 export default function NewAppForm({ categories }: NewAppFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [productPreviewUrl, setProductPreviewUrl] = useState<string | null>(null);
+  const [productPreviewUrl, setProductPreviewUrl] = useState<string | null>(
+    null,
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const productFileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
   // Use useActionState for form handling
-  const [state, formAction, isPending] = useActionState(createNFT, { message: '', error: '' });
+  const [state, formAction, isPending] = useActionState(createNFT, {
+    message: "",
+    error: "",
+  });
 
   // Handle state updates (Error or Success)
   useEffect(() => {
@@ -33,7 +38,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
     } else if (state.message) {
       toast.success(state.message);
       // Redirect after a short delay to allow toast to be seen
-      router.push('/admin/nfts');
+      router.push("/admin/nfts");
     }
   }, [state, router]);
 
@@ -133,10 +138,10 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
                   <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-white font-medium text-sm">Upload Thumbnail</p>
-                  <p className="text-muted text-xs">
-                    (5:3 Aspect Ratio)
+                  <p className="text-white font-medium text-sm">
+                    Upload Thumbnail
                   </p>
+                  <p className="text-muted text-xs">(5:3 Aspect Ratio)</p>
                 </div>
               </div>
             </div>
@@ -193,7 +198,9 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
                   <Upload className="w-6 h-6 text-muted group-hover:text-accent" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-white font-medium text-sm">Upload Product Cover</p>
+                  <p className="text-white font-medium text-sm">
+                    Upload Product Cover
+                  </p>
                   <p className="text-muted text-xs">
                     (High Quality Recommended)
                   </p>
@@ -251,7 +258,9 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             placeholder="e.g. 1200"
             className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />
-          <p className="text-muted text-xs ml-4">Start count (for social proof)</p>
+          <p className="text-muted text-xs ml-4">
+            Start count (for social proof)
+          </p>
         </div>
       </div>
 
@@ -327,7 +336,9 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             placeholder="e.g. 1200"
             className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />
-          <p className="text-muted text-xs ml-4">Start count (for social proof)</p>
+          <p className="text-muted text-xs ml-4">
+            Start count (for social proof)
+          </p>
         </div>
       </div>
 
@@ -336,7 +347,7 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
           disabled={isPending}
           className="w-full bg-white hover:bg-white/90 text-black font-bold py-3.5 rounded-full transition-all shadow-lg shadow-white/10 hover:shadow-white/20 hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? 'Creating App...' : 'Create App'}
+          {isPending ? "Creating App..." : "Create App"}
         </button>
       </div>
     </form>
