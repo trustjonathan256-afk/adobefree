@@ -130,6 +130,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                         alt={product.title}
                         fill
                         className="object-cover scale-[1.02] rounded-t-[2rem] md:rounded-l-[2rem] md:rounded-tr-none"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         priority
                     />
                     {/* Floating Action Buttons over Image */}
