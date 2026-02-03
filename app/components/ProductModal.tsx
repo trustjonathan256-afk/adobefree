@@ -124,7 +124,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
 
                 {/* Image Section */}
-                <div className="relative w-full md:w-5/12 aspect-square md:aspect-auto bg-[#0f1115] overflow-hidden rounded-t-[2rem] md:rounded-l-[2rem] md:rounded-tr-none">
+                <div className="relative w-full md:w-5/12 aspect-video md:aspect-auto bg-[#0f1115] overflow-hidden rounded-t-[2rem] md:rounded-l-[2rem] md:rounded-tr-none">
                     <Image
                         src={product.product_image_url || product.image}
                         alt={product.title}
