@@ -20,6 +20,8 @@ interface NFT {
     image_url: string
     product_image_url?: string | null
     description?: string | null
+    downloads: number
+    badge_text?: string | null
 }
 
 interface EditAppFormProps {

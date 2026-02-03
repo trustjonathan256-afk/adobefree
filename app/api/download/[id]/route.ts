@@ -32,6 +32,10 @@ export async function GET(
         return NextResponse.json({ error: 'Download URL not configured' }, { status: 404 })
     }
 
+    // Increment download count (Atomic update)
+    // We ignore errors here so the user still gets their download even if the counter fails
+    await supabase.rpc('increment_downloads', { app_id: id })
+
     // Redirect directly to the download URL for maximum speed
     // The user downloads directly from the source instead of proxying through Vercel
     return NextResponse.redirect(nft.time_left)

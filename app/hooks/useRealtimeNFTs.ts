@@ -17,6 +17,8 @@ export interface NFT {
     display_order: number;
     description?: string;
     product_image_url?: string;
+    downloads: number;
+    badge_text?: string;
 }
 
 export interface Category {
