@@ -107,17 +107,15 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-[60] flex items-center justify-center px-4 transition-all duration-300 ${
-        isVisible
-          ? "opacity-100 backdrop-blur-md bg-black/60"
-          : "opacity-0 pointer-events-none"
-      }`}
+      className={`fixed inset-0 z-[60] flex items-center justify-center px-4 transition-all duration-300 ${isVisible
+        ? "opacity-100 backdrop-blur-md bg-black/60"
+        : "opacity-0 pointer-events-none"
+        }`}
       onClick={onClose}
     >
       <div
-        className={`bg-[#0f1115] w-full max-w-4xl rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row transition-all duration-300 transform ${
-          isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
-        }`}
+        className={`bg-[#0f1115] w-full max-w-4xl rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row transition-all duration-300 transform ${isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button Mobile - Absolute */}
@@ -171,7 +169,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <span className="text-accent font-medium tracking-wide">
               {product.creator}
             </span>
-            <div className="flex items-center gap-2 pt-2 pb-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mt-2">
+              {product.title}
+            </h2>
+            <div className="flex items-center gap-2 pt-3">
               <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 flex items-center gap-1.5">
                 <DollarSign className="w-4 h-4 text-price" strokeWidth={2.5} />
                 <span className="text-price font-bold text-lg">
@@ -191,9 +192,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 </span>
               </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mt-1">
-              {product.title}
-            </h2>
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar mb-8 min-h-[100px]">
