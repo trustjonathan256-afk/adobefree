@@ -134,7 +134,7 @@ function CategorySection({ category, query }: { category: Category; query: strin
                                 price={item.price}
                                 timeLeft={item.time_left}
                                 description={item.description}
-                                badgeText={item.badge_text}
+                                downloads={item.downloads}
                                 onInstallationClick={(url) => setActiveVideo(url)}
                                 onDetailsClick={() => setActiveProduct(item)}
                             />

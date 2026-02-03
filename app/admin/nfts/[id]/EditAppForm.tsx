@@ -184,33 +184,20 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-                <div className="space-y-3">
-                    <label className="text-sm font-medium text-muted ml-2 block">
-                        Description
-                    </label>
-                    <textarea
-                        name="description"
-                        rows={4}
-                        defaultValue={nft.description || ''}
-                        placeholder="Enter app description..."
-                        className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
-                    />
-                </div>
-                <div className="space-y-3">
-                    <label className="text-sm font-medium text-muted ml-2 block">
-                        Downloads Count
-                    </label>
-                    <input
-                        name="downloads"
-                        type="number"
-                        defaultValue={nft.downloads}
-                        className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
-                    />
-                    <p className="text-muted text-xs ml-4">Set manual count</p>
-                </div>
+            <div className="space-y-3">
+                <label className="text-sm font-medium text-muted ml-2 block">
+                    Description
+                </label>
+                <textarea
+                    name="description"
+                    rows={4}
+                    defaultValue={nft.description || ''}
+                    placeholder="Enter app description..."
+                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
+                />
             </div>
 
+            {/* Title & Creator */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div className="space-y-3">
                     <label className="text-sm font-medium text-muted ml-2 block">Title</label>
@@ -222,6 +209,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                 </div>
             </div>
 
+            {/* Price & Download URL */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div className="space-y-3">
                     <label className="text-sm font-medium text-muted ml-2 block">Price</label>
@@ -233,6 +221,7 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                 </div>
             </div>
 
+            {/* Category & Downloads */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                 <div className="space-y-3">
                     <label className="text-sm font-medium text-muted ml-2 block">Category</label>
@@ -249,8 +238,16 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
                     </div>
                 </div>
                 <div className="space-y-3">
-                    <label className="text-sm font-medium text-muted ml-2 block">Version Badge (Optional)</label>
-                    <input name="badge_text" defaultValue={nft.badge_text || ''} placeholder="e.g. v2026, New, Beta" className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg" />
+                    <label className="text-sm font-medium text-muted ml-2 block">
+                        Downloads Count
+                    </label>
+                    <input
+                        name="downloads"
+                        type="number"
+                        defaultValue={nft.downloads}
+                        className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+                    />
+                    <p className="text-muted text-xs ml-4">Set manual count</p>
                 </div>
             </div>
 

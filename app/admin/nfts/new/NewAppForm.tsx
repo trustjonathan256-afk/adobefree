@@ -317,6 +317,18 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             </div>
           </div>
         </div>
+        <div className="space-y-3">
+          <label className="text-sm font-medium text-muted ml-2 block">
+            Initial Downloads
+          </label>
+          <input
+            name="downloads"
+            type="number"
+            placeholder="e.g. 1200"
+            className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
+          />
+          <p className="text-muted text-xs ml-4">Start count (for social proof)</p>
+        </div>
       </div>
 
       <div className="pt-4">
