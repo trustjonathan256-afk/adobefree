@@ -30,15 +30,12 @@ export default function RootLayout({
       >
         <Toaster
           position="top-center"
-          richColors
           theme="dark"
           toastOptions={{
-            className: "!rounded-full !px-6 !py-3 !text-sm !font-medium",
+            className: "glass-toast",
             style: {
               borderRadius: "9999px",
-              background: "var(--card-bg)",
-              border: "1px solid var(--card-border)",
-              color: "var(--foreground)",
+              color: "#ffffff",
             },
           }}
         />

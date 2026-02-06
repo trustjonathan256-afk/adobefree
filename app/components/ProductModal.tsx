@@ -77,30 +77,19 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       return;
     }
 
-    const toastId = toast.loading("Checking file size...");
+    const toastId = toast.loading("Wait a moment...");
 
     try {
-      const size = await getFileSize(product.id);
-      let sizeText = "";
+      await getFileSize(product.id);
 
-      if (size) {
-        const gigabytes = size / (1024 * 1024 * 1024);
-        if (gigabytes >= 1) {
-          sizeText = `(${gigabytes.toFixed(2)} GB)`;
-        } else {
-          const megabytes = size / (1024 * 1024);
-          sizeText = `(${megabytes.toFixed(0)} MB)`;
-        }
-      }
-
-      toast.success(`Download started ${sizeText}`, { id: toastId });
+      toast.success("Your download has started", { id: toastId });
 
       setTimeout(() => {
         window.location.href = `/api/download/${product.id}`;
       }, 500);
     } catch (error) {
       console.error("Size check failed", error);
-      toast.success("Download started", { id: toastId });
+      toast.success("Your download has started", { id: toastId });
       window.location.href = `/api/download/${product.id}`;
     }
   };
