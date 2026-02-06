@@ -82,14 +82,20 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     try {
       await getFileSize(product.id);
 
-      toast.success("Your download has started", { id: toastId });
+      toast.success("Your download has started", {
+        id: toastId,
+        icon: <CloudDownload className="w-5 h-5 text-price animate-bounce" />
+      });
 
       setTimeout(() => {
         window.location.href = `/api/download/${product.id}`;
       }, 500);
     } catch (error) {
       console.error("Size check failed", error);
-      toast.success("Your download has started", { id: toastId });
+      toast.success("Your download has started", {
+        id: toastId,
+        icon: <CloudDownload className="w-5 h-5 text-price animate-bounce" />
+      });
       window.location.href = `/api/download/${product.id}`;
     }
   };

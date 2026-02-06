@@ -29,9 +29,10 @@ body {
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 .pill-container {
@@ -56,6 +57,26 @@ body {
 ::-webkit-scrollbar {
   width: 0px;
   background: transparent;
+}
+
+.glow-premium {
+  position: relative;
+}
+
+.glow-premium::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, var(--accent), transparent, var(--accent));
+  filter: blur(15px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.glow-premium:hover::after {
+  opacity: 0.15;
 }
 
 /* Glass Toast Styling */
