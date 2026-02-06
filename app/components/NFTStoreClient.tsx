@@ -154,17 +154,17 @@ function CategorySection({
 
       <ProductModal
         product={
-          activeProduct && {
+          activeProduct && (category.nfts.find(n => n.id === activeProduct.id) || activeProduct) && {
             id: activeProduct.id,
-            image: activeProduct.image_url,
-            title: activeProduct.title,
-            description: activeProduct.description,
-            product_image_url: activeProduct.product_image_url,
-            creator: activeProduct.creator,
-            price: activeProduct.price,
-            timeLeft: activeProduct.time_left,
-            downloads: activeProduct.downloads,
-            badge_text: activeProduct.badge_text,
+            image: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).image_url,
+            title: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).title,
+            description: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).description,
+            product_image_url: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).product_image_url,
+            creator: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).creator,
+            price: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).price,
+            timeLeft: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).time_left,
+            downloads: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).downloads,
+            badge_text: (category.nfts.find(n => n.id === activeProduct.id) || activeProduct).badge_text,
           }
         }
         onClose={() => setActiveProduct(null)}
