@@ -325,7 +325,8 @@ export default function EditAppForm({ nft, categories }: EditAppFormProps) {
           </label>
           <input
             name="downloads"
-            type="number"
+            type="text"
+            inputMode="numeric"
             defaultValue={nft.downloads}
             className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />

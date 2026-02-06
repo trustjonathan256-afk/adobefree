@@ -211,6 +211,18 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
         </div>
       </div>
 
+      <div className="space-y-3">
+        <label className="text-sm font-medium text-muted ml-2 block">
+          Description
+        </label>
+        <textarea
+          name="description"
+          rows={4}
+          placeholder="Enter app description..."
+          className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
+        />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
         <div className="space-y-3">
           <label className="text-sm font-medium text-muted ml-2 block">
@@ -233,34 +245,6 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
             placeholder="e.g. Shapire Cole"
             className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
-            Description
-          </label>
-          <textarea
-            name="description"
-            rows={4}
-            placeholder="Enter app description..."
-            className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg resize-none"
-          />
-        </div>
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-muted ml-2 block">
-            Initial Downloads
-          </label>
-          <input
-            name="downloads"
-            type="number"
-            placeholder="e.g. 1200"
-            className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
-          />
-          <p className="text-muted text-xs ml-4">
-            Start count (for social proof)
-          </p>
         </div>
       </div>
 
@@ -332,7 +316,8 @@ export default function NewAppForm({ categories }: NewAppFormProps) {
           </label>
           <input
             name="downloads"
-            type="number"
+            type="text"
+            inputMode="numeric"
             placeholder="e.g. 1200"
             className="w-full bg-white/5 border border-white/10 rounded-full py-3 sm:py-4 px-6 sm:px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 transition-all text-base sm:text-lg"
           />
