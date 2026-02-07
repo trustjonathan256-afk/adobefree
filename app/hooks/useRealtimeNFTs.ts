@@ -42,6 +42,7 @@ export function useRealtimeNFTs(initialData: Category[]) {
         "postgres_changes",
         { event: "*", schema: "public", table: "nfts" },
         (payload: RealtimePostgresChangesPayload<NFT>) => {
+          console.log("Realtime NFT update received:", payload);
           setCategories((prev) => {
             // Deep clone to avoid mutation
             const updated = JSON.parse(JSON.stringify(prev)) as Category[];
