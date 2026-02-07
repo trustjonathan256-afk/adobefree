@@ -86,36 +86,32 @@ body {
   width: fit-content !important;
 }
 
-.glass-toast {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-  background: rgba(15, 17, 21, 0.7) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow:
-    0 10px 40px -10px rgba(0, 0, 0, 0.5),
-    0 0 20px 0 rgba(107, 102, 255, 0.1) !important;
-  padding: 10px 24px !important;
-  min-width: unset !important;
-  width: fit-content !important;
-  margin: 0 auto !important;
-  position: relative !important;
+
+
+/* Glass Toast Styling - targeting the toast element directly */
+li.glass-toast {
+  background: rgba(10, 10, 10, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
 }
 
-.glass-toast [data-icon] {
-  margin: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.glass-toast [data-content] {
-  margin: 0 !important;
+li.glass-toast [data-content] {
+  color: #ffffff !important;
   font-weight: 500 !important;
-  letter-spacing: -0.01em !important;
+}
+
+li.glass-toast [data-icon] {
+  color: #ffffff !important;
+}
+
+/* Ensure description is also visible if present */
+li.glass-toast [data-description] {
+  color: #a1a1aa !important;
+  /* text-muted */
 }
 
 * {
