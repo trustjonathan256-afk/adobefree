@@ -47,7 +47,7 @@ export default async function LoginPage(props: {
               name="email"
               type="email"
               required
-              placeholder="trustjonathan.ug@gmail.com"
+              placeholder="example@gmail.com"
               className="w-full bg-white/5 border border-white/10 rounded-full py-4 px-8 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all font-light text-lg"
             />
           </div>
