@@ -79,39 +79,66 @@ body {
   opacity: 0.15;
 }
 
-/* Glass Toast Styling */
-[data-sonner-toaster][data-position="top-center"] {
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: fit-content !important;
+/* ========== TOAST STYLES ========== */
+
+/* Target the Sonner list container to ensure it centers items */
+[data-sonner-toaster][data-theme='dark'] ol {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
-
-
-/* Glass Toast Styling - targeting the toast element directly */
+/* The toast itself */
 li.glass-toast {
-  background: rgba(10, 10, 10, 0.85) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
+  position: relative !important;
+  background: rgba(10, 10, 10, 0.9) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
   color: #ffffff !important;
   border-radius: 9999px !important;
+  width: fit-content !important;
+  /* Shrink to fit content */
+  min-width: auto !important;
+  /* Allow it to be as small as possible */
+  max-width: 90vw !important;
+  /* Prevent it from being too wide on small screens */
+  padding: 10px 20px !important;
+  /* Compact padding */
+  font-size: 0.85rem !important;
+  display: flex !important;
+  flex-direction: row !important;
+  /* Force row direction */
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  /* Prevent text wrapping */
+  height: auto !important;
+  margin: 0 auto !important;
+  /* Ensure it centers within the flex container */
+  left: auto !important;
+  /* Reset left positioning if any */
+  right: auto !important;
+  /* Reset right positioning if any */
+  transform: none !important;
+  /* Reset transform if any */
 }
 
 li.glass-toast [data-content] {
   color: #ffffff !important;
   font-weight: 500 !important;
+  display: inline-block !important;
+  /* Ensure text behaves as block/inline-block */
 }
 
 li.glass-toast [data-icon] {
-  color: #ffffff !important;
-}
-
-/* Ensure description is also visible if present */
-li.glass-toast [data-description] {
-  color: #a1a1aa !important;
-  /* text-muted */
+  color: #22c55e !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 * {

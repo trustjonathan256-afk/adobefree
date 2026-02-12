@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Share2, Heart, CloudDownload, DollarSign } from "lucide-react";
+import { Share2, Heart, CloudDownload, DollarSign, Check } from "lucide-react";
 import { toast } from "sonner";
 import { getFileSize } from "./actions";
 
@@ -46,24 +46,29 @@ export default function NFTCard({
     localStorage.setItem(`liked-${id}`, JSON.stringify(newState));
   };
 
+  const [isShared, setIsShared] = useState(false);
+
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const shareData = {
       title: "Adobe Free",
       text: "Check out Adobe Free App Store",
-      url: window.location.href, // This could be better if we had specific product pages
+      url: window.location.href,
     };
 
     if (navigator.share) {
       try {
         await navigator.share(shareData);
+        setIsShared(true);
+        setTimeout(() => setIsShared(false), 2000);
       } catch (err) {
         console.error("Error sharing:", err);
       }
     } else {
       try {
         await navigator.clipboard.writeText(shareData.url);
-        toast.success("Link copied to clipboard!");
+        setIsShared(true);
+        setTimeout(() => setIsShared(false), 2000);
       } catch (err) {
         console.error("Error copying link:", err);
       }
@@ -97,9 +102,16 @@ export default function NFTCard({
         <div className="absolute bottom-0 right-4 sm:right-6 flex items-center gap-1.5 sm:gap-2 z-10 translate-y-1/2">
           <button
             onClick={handleShare}
-            className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-accent hover:border-accent shadow-xl cursor-pointer group/btn"
+            className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#1c1e26] border border-white/10 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-xl cursor-pointer group/btn ${isShared
+              ? "bg-green-500/20 border-green-500 text-green-500"
+              : "hover:bg-accent hover:border-accent"
+              }`}
           >
-            <Share2 className="w-3 h-3 sm:w-4 sm:h-4 text-white/70 group-hover/btn:text-white transition-colors" />
+            {isShared ? (
+              <Check className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 transition-all duration-300 scale-110" />
+            ) : (
+              <Share2 className="w-3 h-3 sm:w-4 sm:h-4 text-white/70 group-hover/btn:text-white transition-colors" />
+            )}
           </button>
           <button
             onClick={handleLike}
