@@ -19,7 +19,7 @@ export default async function NFTsPage() {
                     <h2 className="text-2xl sm:text-3xl font-bold text-white">Apps</h2>
                     <span className="text-muted text-xs">Drag to reorder</span>
                 </div>
-                <Link href="/admin/nfts/new" className="bg-white hover:bg-white/90 text-black font-bold h-[40px] sm:h-[44px] px-4 sm:px-6 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-sm sm:text-base">
+                <Link href="/admin/nfts/new" className="bg-white hover:bg-white/90 text-black font-bold h-[2.5rem] sm:h-[2.75rem] px-4 sm:px-6 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 text-sm sm:text-base">
                     <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                     New App
                 </Link>

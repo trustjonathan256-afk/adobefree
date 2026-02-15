@@ -108,10 +108,12 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
         }`}
       onClick={onClose}
     >
-      <div
+      <article
         className={`bg-[#0f1115] w-full max-w-4xl rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row transition-all duration-300 transform ${isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
           }`}
         onClick={(e) => e.stopPropagation()}
+        itemScope
+        itemType="https://schema.org/SoftwareApplication"
       >
         {/* Close Button Mobile - Absolute */}
         <button
@@ -123,13 +125,17 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
         {/* Image Section */}
         <div className="relative w-full md:w-5/12 aspect-video md:aspect-auto bg-[#0f1115] overflow-hidden rounded-t-[2rem] md:rounded-l-[2rem] md:rounded-tr-none">
+          <meta itemProp="operatingSystem" content="Windows, macOS" />
+          <meta itemProp="applicationCategory" content="DesignApplication" />
+          <meta itemProp="offers" content="0" />
           <Image
             src={product.product_image_url || product.image}
-            alt={product.title}
+            alt={`${product.title} free download`}
             fill
             className="object-cover scale-[1.02] rounded-t-[2rem] md:rounded-l-[2rem] md:rounded-tr-none"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 48rem) 100vw, 50vw"
             priority
+            itemProp="image"
           />
           {/* Floating Action Buttons over Image */}
           <div className="absolute bottom-6 right-6 z-10 flex items-center gap-3">
@@ -164,7 +170,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <span className="text-accent font-medium tracking-wide">
               {product.creator}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mt-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mt-2" itemProp="name">
               {product.title}
             </h2>
             <div className="flex items-center gap-2 pt-3">
@@ -189,7 +195,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar mb-8 min-h-[100px]">
+          <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar mb-8 min-h-[6.25rem]">
             <p className="text-muted text-lg leading-relaxed whitespace-pre-line">
               {product.description ||
                 "No description available for this application."}
@@ -212,7 +218,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
         {/* Border Overlay */}
         <div className="absolute inset-0 rounded-[2rem] border border-white/10 pointer-events-none z-50" />
-      </div>
+      </article>
     </div>
   );
 }

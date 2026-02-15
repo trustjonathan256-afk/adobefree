@@ -129,7 +129,7 @@ function CategorySection({
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="min-w-[260px] sm:min-w-[300px] md:min-w-[340px] snap-start pointer-events-auto"
+            className="min-w-[16.25rem] sm:min-w-[18.75rem] md:min-w-[21.25rem] snap-start pointer-events-auto"
           >
             {/* Disable clicking card while dragging to prevent accidental opens */}
             <div className={`${isDragging ? "pointer-events-none" : ""}`}>

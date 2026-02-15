@@ -76,20 +76,26 @@ export default function NFTCard({
   };
 
   return (
-    <div
+    <article
       onClick={onDetailsClick}
       className="cursor-pointer bg-card rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] overflow-hidden border border-card-border flex flex-col group transition-all duration-500 ease-out hover:!border-white/15 hover:shadow-2xl hover:shadow-accent/5"
+      itemScope
+      itemType="https://schema.org/SoftwareApplication"
     >
       {/* Image Section */}
       <div className="relative p-1.5 sm:p-2 pb-0">
         <div className="relative aspect-[5/3] rounded-t-[1.3rem] sm:rounded-t-[1.8rem] lg:rounded-t-[2.3rem] rounded-b-[1rem] sm:rounded-b-[1.25rem] lg:rounded-b-[1.5rem] overflow-hidden">
+          <meta itemProp="operatingSystem" content="Windows, macOS" />
+          <meta itemProp="applicationCategory" content="DesignApplication" />
+          <meta itemProp="offers" content="0" />
           <Image
             src={image}
-            alt={title}
+            alt={`${title} free download`}
             fill
             className="object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 40rem) 100vw, (max-width: 64rem) 50vw, 33vw"
             priority
+            itemProp="image"
           />
           {/* Download Counter Badge */}
           <div className="absolute bottom-3 left-3 bg-white/10 text-white text-[0.65rem] sm:text-xs font-bold px-2.5 py-1 rounded-full shadow-lg border border-white/10 backdrop-blur-md flex items-center gap-1.5 z-10">
@@ -131,7 +137,7 @@ export default function NFTCard({
             {creator}
           </span>
           <div className="flex items-center justify-between">
-            <h3 className="text-[1rem] sm:text-[1.15rem] font-bold tracking-tight text-white leading-snug whitespace-nowrap">
+            <h3 className="text-[1rem] sm:text-[1.15rem] font-bold tracking-tight text-white leading-snug whitespace-nowrap" itemProp="name">
               {title}
             </h3>
             <div className="flex items-center gap-0.5 mt-0.5">
@@ -174,6 +180,6 @@ export default function NFTCard({
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

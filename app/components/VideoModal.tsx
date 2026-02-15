@@ -148,7 +148,7 @@ export default function VideoModal({ videoUrl, onClose }: VideoModalProps) {
           {!isPlaying && showControls && (
             <button
               onClick={togglePlay}
-              className="absolute inset-0 m-auto w-20 h-20 flex items-center justify-center bg-black/30 backdrop-blur-[2px] rounded-full text-white hover:scale-110 transition-transform duration-300 z-10"
+              className="absolute inset-0 m-auto w-20 h-20 flex items-center justify-center bg-black/30 backdrop-blur-[0.125rem] rounded-full text-white hover:scale-110 transition-transform duration-300 z-10"
             >
               <Play className="w-8 h-8 ml-1 fill-white" />
             </button>

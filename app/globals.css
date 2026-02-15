@@ -20,6 +20,10 @@
   --color-price: var(--price-green);
 }
 
+html {
+  font-size: 85%;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -30,14 +34,14 @@ body {
 
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(1.25rem);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0.5rem 2rem 0 rgba(0, 0, 0, 0.37);
 }
 
 .pill-container {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.05);
 }
 
 /* Hide scrollbar while keeping scrollability */
@@ -55,7 +59,7 @@ body {
 
 /* Global scrollbar hide */
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 0;
   background: transparent;
 }
 
@@ -66,9 +70,9 @@ body {
 .glow-premium::after {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: -0.0625rem;
   background: linear-gradient(45deg, var(--accent), transparent, var(--accent));
-  filter: blur(15px);
+  filter: blur(0.9375rem);
   opacity: 0;
   transition: opacity 0.5s ease;
   z-index: -1;
@@ -92,19 +96,19 @@ body {
 li.glass-toast {
   position: relative !important;
   background: rgba(10, 10, 10, 0.9) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(1rem) !important;
+  -webkit-backdrop-filter: blur(1rem) !important;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5) !important;
   color: #ffffff !important;
-  border-radius: 9999px !important;
+  border-radius: 9999rem !important;
   width: fit-content !important;
   /* Shrink to fit content */
   min-width: auto !important;
   /* Allow it to be as small as possible */
   max-width: 90vw !important;
   /* Prevent it from being too wide on small screens */
-  padding: 10px 20px !important;
+  padding: 0.625rem 1.25rem !important;
   /* Compact padding */
   font-size: 0.85rem !important;
   display: flex !important;
@@ -112,7 +116,7 @@ li.glass-toast {
   /* Force row direction */
   align-items: center !important;
   justify-content: center !important;
-  gap: 8px !important;
+  gap: 0.5rem !important;
   text-align: center !important;
   white-space: nowrap !important;
   /* Prevent text wrapping */
