@@ -8,6 +8,17 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
+  const path = request.nextUrl.pathname;
+
+  // Only create Supabase client and call getUser() for routes that need auth.
+  // This avoids a slow network call to Supabase on every public page request,
+  // which was causing MIDDLEWARE_INVOCATION_TIMEOUT on Vercel.
+  const needsAuth = path.startsWith("/admin") || path === "/login";
+
+  if (!needsAuth) {
+    return response;
+  }
+
   // Create a supabase client for middleware
   // Note: We cannot await 'cookies()' here, we use request.cookies
   const supabase = createServerClient(
@@ -33,7 +44,6 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // ROUTE PROTECTION
-  const path = request.nextUrl.pathname;
 
   // 1. Protect /admin routes
   if (path.startsWith("/admin")) {
