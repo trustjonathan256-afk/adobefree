@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Layers, AppWindow, Menu, X } from "lucide-react";
+import { LayoutDashboard, Layers, AppWindow, Menu, X, LifeBuoy } from "lucide-react";
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -34,6 +34,12 @@ export function AdminNav() {
       label: "Apps",
       icon: AppWindow,
       active: isActive("/admin/nfts"),
+    },
+    {
+      href: "/admin/support",
+      label: "Support",
+      icon: LifeBuoy,
+      active: isActive("/admin/support"),
     },
   ];
 
